@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import './index.css'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
+import Notification from './components/Notification'
 
 function App() {
-  const [errorMessage, setErrorMessage] = useState('')
+  const [notification, setNotification] = useState({
+    message: '',
+    type: ''
+  })
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -45,8 +50,27 @@ function App() {
       url: newUrl,
     }
 
-    const newBlog = await blogService.create(blogObject)
-    setBlogs(blogs.concat(newBlog))
+    if (blogObject.title && blogObject.url) {
+      const newBlog = await blogService.create(blogObject)
+      setBlogs(blogs.concat(newBlog))
+      setNotification({
+        message: `Blog: ${newTitle} by ${newAuthor} is created`,
+        type: 'notification'
+      })
+    }
+    else {
+      setNotification({
+        message: `Missing title or url`,
+        type: 'error'
+      })
+    }
+    
+    setTimeout(() => {
+      setNotification({
+        message: null,
+        type: null
+      })
+    }, 5000)
     setNewTitle('')
     setNewAuthor('')
     setNewUrl('')
@@ -83,9 +107,15 @@ function App() {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setNotification({
+        message: 'Wrong credentials',
+        type: 'error'
+      })
       setTimeout(() => {
-        setErrorMessage(null)
+        setNotification({
+          message: null,
+          type: null
+        })
       }, 5000)
     }
   }
@@ -120,7 +150,10 @@ function App() {
   return (
     <div>
 
-      <h3>{errorMessage}</h3>
+      <Notification 
+        message={notification.message} 
+        className={notification.type}
+      />
 
       {user === null ?
         <LoginForm 
