@@ -3,6 +3,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
+import NewBlogForm from './components/NewBlogForm'
 
 function App() {
   const [errorMessage, setErrorMessage] = useState('')
@@ -10,6 +11,9 @@ function App() {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
+  const [newTitle, setNewTitle] = useState('')
+  const [newAuthor, setNewAuthor] = useState('')
+  const [newUrl, setNewUrl] = useState('')
 
   useEffect(() => {
     blogService
@@ -31,7 +35,37 @@ function App() {
       key={blog.id}
       blog={blog}
     />
-    )
+  )
+
+  const addBlog = async (event) => {
+    event.preventDefault()
+    const blogObject = {
+      title: newTitle,
+      author: newAuthor,
+      url: newUrl,
+    }
+
+    const newBlog = await blogService.create(blogObject)
+    setBlogs(blogs.concat(newBlog))
+    setNewTitle('')
+    setNewAuthor('')
+    setNewUrl('')
+  }
+
+  const handleTitleChange = (event) => {
+    event.preventDefault()
+    setNewTitle(event.target.value)
+  }
+
+  const handleAuthorChange = (event) => {
+    event.preventDefault()
+    setNewAuthor(event.target.value)
+  }
+
+  const handleUrlChange = (event) => {
+    event.preventDefault()
+    setNewUrl(event.target.value)
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -44,6 +78,7 @@ function App() {
         'loggedInUser', JSON.stringify(user)
       )
 
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -67,6 +102,15 @@ function App() {
         <span>{user.name} logged in </span>
         <button type="submit" onClick={handleLogout}>logout</button>
       </p>
+      <NewBlogForm 
+        addBlog = {addBlog}
+        newTitle={newTitle}
+        handleTitleChange = {handleTitleChange}
+        newAuthor={newAuthor}
+        handleAuthorChange = {handleAuthorChange}
+        newUrl={newUrl}
+        handleUrlChange = {handleUrlChange}
+      />
       <ul>
         {blogsToShow()}
       </ul>
@@ -82,7 +126,9 @@ function App() {
         <LoginForm 
           handleLogin = {handleLogin}
           setUsername = {setUsername}
-          setPassword = {setPassword}/> :
+          setPassword = {setPassword}
+        /> :
+
         blogList()
       }
       
