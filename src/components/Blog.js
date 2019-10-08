@@ -1,8 +1,9 @@
 import React from 'react'
+
 const Blog = ({ blog }) => (
-  <div>
-    {blog.title} {blog.author}
-  </div>
+  <li>
+    {blog.title}, by <i>{blog.author}</i>
+  </li>
 )
 
 export default Blog
