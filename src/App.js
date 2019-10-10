@@ -52,12 +52,22 @@ function App() {
     }
 
     if (blogObject.title && blogObject.url) {
+      /**
+       * Note: After setBlogs(blogs.concat(newBlog)), the page is rendered,
+       * and the old blog form which is assigned to newBlogFormRef variable
+       * is destroyed, so call newBlogFormRef.current.toggleVisibility() 
+       * after that will cause an error.
+       */
+      newBlogFormRef.current.toggleVisibility()
       const newBlog = await blogService.create(blogObject)
       setBlogs(blogs.concat(newBlog))
       setNotification({
         message: `Blog: ${newTitle} by ${newAuthor} is created`,
         type: 'notification'
       })
+      setNewTitle('')
+      setNewAuthor('')
+      setNewUrl('')
     }
     else {
       setNotification({
@@ -72,9 +82,6 @@ function App() {
         type: null
       })
     }, 5000)
-    setNewTitle('')
-    setNewAuthor('')
-    setNewUrl('')
   }
 
   const handleTitleChange = (event) => {
@@ -151,8 +158,10 @@ function App() {
     </div>
   )
 
+  const newBlogFormRef = React.createRef()
+
   const newBlogForm = () => (
-    <Togglable buttonLabel="Create New Blog">
+    <Togglable buttonLabel="Create New Blog" ref={newBlogFormRef}>
       <NewBlogForm 
         addBlog = {addBlog}
         newTitle={newTitle}
