@@ -6,6 +6,7 @@ import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 
 function App() {
   const [notification, setNotification] = useState({
@@ -125,13 +126,33 @@ function App() {
     setUser(null)
   }
 
-  const blogList = () => (
+  const loginForm = () => (
+    <Togglable buttonLabel="Login">
+        <LoginForm 
+          handleLogin = {handleLogin}
+          setUsername = {setUsername}
+          setPassword = {setPassword}
+        />
+    </Togglable>
+  )
+
+  const content = () => (
     <div>
-      <h1>Blogs</h1>
       <p>
         <span>{user.name} logged in </span>
         <button type="submit" onClick={handleLogout}>logout</button>
       </p>
+
+      {newBlogForm()}
+
+      <ul>
+        {blogsToShow()}
+      </ul>
+    </div>
+  )
+
+  const newBlogForm = () => (
+    <Togglable buttonLabel="Create New Blog">
       <NewBlogForm 
         addBlog = {addBlog}
         newTitle={newTitle}
@@ -141,10 +162,7 @@ function App() {
         newUrl={newUrl}
         handleUrlChange = {handleUrlChange}
       />
-      <ul>
-        {blogsToShow()}
-      </ul>
-    </div>
+    </Togglable>
   )
 
   return (
@@ -155,14 +173,11 @@ function App() {
         className={notification.type}
       />
 
-      {user === null ?
-        <LoginForm 
-          handleLogin = {handleLogin}
-          setUsername = {setUsername}
-          setPassword = {setPassword}
-        /> :
+      <h1>Blogs</h1>
 
-        blogList()
+      {user === null ?
+        loginForm() :
+        content()
       }
       
     </div>
