@@ -40,6 +40,7 @@ function App() {
     <Blog 
       key={blog.id}
       blog={blog}
+      increaseLikes={() => increaseLikes(blog.id)}
     />
   )
 
@@ -82,6 +83,14 @@ function App() {
         type: null
       })
     }, 5000)
+  }
+
+  const increaseLikes = async (id) => {
+    const blog = blogs.find(n => n.id === id)
+    const updatedBlog = { ...blog, likes: blog.likes + 1 }
+
+    const returnedBlog = await blogService.update(id, updatedBlog)
+    setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
   }
 
   const handleTitleChange = (event) => {
