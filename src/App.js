@@ -24,7 +24,9 @@ function App() {
   useEffect(() => {
     blogService
       .getAll()
-      .then(initialBlogs => setBlogs(initialBlogs))
+      .then(initialBlogs =>
+        setBlogs(initialBlogs.sort((x, y) => y.likes - x.likes))
+      )
   }, [])
 
   useEffect(() => {
@@ -90,7 +92,11 @@ function App() {
     const updatedBlog = { ...blog, likes: blog.likes + 1 }
 
     const returnedBlog = await blogService.update(id, updatedBlog)
-    setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+    setBlogs(
+      blogs
+        .map(blog => blog.id !== id ? blog : returnedBlog)
+        .sort((x, y) => y.likes - x.likes)
+    )
   }
 
   const handleTitleChange = (event) => {
