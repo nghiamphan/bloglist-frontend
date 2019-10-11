@@ -43,6 +43,7 @@ function App() {
       key={blog.id}
       blog={blog}
       increaseLikes={() => increaseLikes(blog.id)}
+      remove={() => removeBlog(blog.id)}
     />
   )
 
@@ -97,6 +98,11 @@ function App() {
         .map(blog => blog.id !== id ? blog : returnedBlog)
         .sort((x, y) => y.likes - x.likes)
     )
+  }
+
+  const removeBlog = async (id) => {
+    blogService.remove(id)
+    setBlogs(blogs.filter(blog => blog.id !== id))
   }
 
   const handleTitleChange = (event) => {
