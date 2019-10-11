@@ -38,17 +38,18 @@ function App() {
     }
   }, [])
 
-  const blogsToShow = () => blogs.map(blog => 
+  const blogsToShow = () => blogs.map(blog =>
     <Blog 
       key={blog.id}
       blog={blog}
       increaseLikes={() => increaseLikes(blog.id)}
       remove={() => removeBlog(blog.id)}
+      removeAllowed={user.username === blog.user.username}
     />
   )
 
   const addBlog = async (event) => {
-    event.preventDefault()
+    //event.preventDefault()
     const blogObject = {
       title: newTitle,
       author: newAuthor,

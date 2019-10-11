@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, increaseLikes, remove }) => {
+const Blog = ({ blog, increaseLikes, user, remove, removeAllowed }) => {
   const [expanded, setExpanded] = useState(false)
+
+  const showIfAllowed = { display: removeAllowed ? '' : 'none'}
 
   const toggleExpanded = () => {
     setExpanded(!expanded)
@@ -19,7 +21,7 @@ const Blog = ({ blog, increaseLikes, remove }) => {
           <button onClick={increaseLikes}>like</button>
         </div>
         <div>added by {blog.user.name}</div>
-        <button onClick={remove}>remove</button>
+        <button onClick={remove} style={showIfAllowed}>remove</button>
       </li>
     )
   }
