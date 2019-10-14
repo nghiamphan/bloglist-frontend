@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import './index.css'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -39,7 +39,7 @@ function App() {
   }, [])
 
   const blogsToShow = () => blogs.map(blog =>
-    <Blog 
+    <Blog
       key={blog.id}
       blog={blog}
       increaseLikes={() => increaseLikes(blog.id)}
@@ -60,7 +60,7 @@ function App() {
       /**
        * Note: After setBlogs(blogs.concat(newBlog)), the page is rendered,
        * and the old blog form which is assigned to newBlogFormRef variable
-       * is destroyed, so call newBlogFormRef.current.toggleVisibility() 
+       * is destroyed, so call newBlogFormRef.current.toggleVisibility()
        * after that will cause an error.
        */
       newBlogFormRef.current.toggleVisibility()
@@ -76,11 +76,11 @@ function App() {
     }
     else {
       setNotification({
-        message: `Missing title or url`,
+        message: 'Missing title or url',
         type: 'error'
       })
     }
-    
+
     setTimeout(() => {
       setNotification({
         message: null,
@@ -157,11 +157,11 @@ function App() {
 
   const loginForm = () => (
     <Togglable buttonLabel="Login">
-        <LoginForm 
-          handleLogin = {handleLogin}
-          setUsername = {setUsername}
-          setPassword = {setPassword}
-        />
+      <LoginForm
+        handleLogin = {handleLogin}
+        setUsername = {setUsername}
+        setPassword = {setPassword}
+      />
     </Togglable>
   )
 
@@ -184,7 +184,7 @@ function App() {
 
   const newBlogForm = () => (
     <Togglable buttonLabel="Create New Blog" ref={newBlogFormRef}>
-      <NewBlogForm 
+      <NewBlogForm
         addBlog = {addBlog}
         newTitle={newTitle}
         handleTitleChange = {handleTitleChange}
@@ -199,8 +199,8 @@ function App() {
   return (
     <div>
 
-      <Notification 
-        message={notification.message} 
+      <Notification
+        message={notification.message}
         className={notification.type}
       />
 
@@ -210,9 +210,9 @@ function App() {
         loginForm() :
         content()
       }
-      
+
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
