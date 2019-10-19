@@ -7,19 +7,21 @@ import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import { useField } from './hooks'
 
 function App() {
   const [notification, setNotification] = useState({
     message: '',
     type: ''
   })
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
+
+  const username = useField('text')
+  const password = useField('password')
 
   useEffect(() => {
     blogService
@@ -125,7 +127,7 @@ function App() {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username, password,
+        username: username.value, password: password.value,
       })
 
       window.localStorage.setItem(
@@ -134,8 +136,8 @@ function App() {
 
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
+      username.set('')
+      password.set('')
     } catch (exception) {
       setNotification({
         message: 'Wrong credentials',
@@ -159,8 +161,8 @@ function App() {
     <Togglable buttonLabel="Login">
       <LoginForm
         handleLogin = {handleLogin}
-        setUsername = {setUsername}
-        setPassword = {setPassword}
+        username = {username}
+        password = {password}
       />
     </Togglable>
   )
