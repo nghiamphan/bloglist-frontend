@@ -16,12 +16,13 @@ function App() {
   })
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
-  const [newTitle, setNewTitle] = useState('')
-  const [newAuthor, setNewAuthor] = useState('')
-  const [newUrl, setNewUrl] = useState('')
 
   const username = useField('text')
   const password = useField('password')
+
+  const newTitle = useField('text')
+  const newAuthor = useField('text')
+  const newUrl = useField('text')
 
   useEffect(() => {
     blogService
@@ -53,9 +54,9 @@ function App() {
   const addBlog = async (event) => {
     //event.preventDefault()
     const blogObject = {
-      title: newTitle,
-      author: newAuthor,
-      url: newUrl,
+      title: newTitle.value,
+      author: newAuthor.value,
+      url: newUrl.value,
     }
 
     if (blogObject.title && blogObject.url) {
@@ -72,9 +73,9 @@ function App() {
         message: `Blog: ${newTitle} by ${newAuthor} is created`,
         type: 'notification'
       })
-      setNewTitle('')
-      setNewAuthor('')
-      setNewUrl('')
+      newTitle.set('')
+      newAuthor.set('')
+      newUrl.set('')
     }
     else {
       setNotification({
@@ -106,21 +107,6 @@ function App() {
   const removeBlog = async (id) => {
     blogService.remove(id)
     setBlogs(blogs.filter(blog => blog.id !== id))
-  }
-
-  const handleTitleChange = (event) => {
-    event.preventDefault()
-    setNewTitle(event.target.value)
-  }
-
-  const handleAuthorChange = (event) => {
-    event.preventDefault()
-    setNewAuthor(event.target.value)
-  }
-
-  const handleUrlChange = (event) => {
-    event.preventDefault()
-    setNewUrl(event.target.value)
   }
 
   const handleLogin = async (event) => {
@@ -189,11 +175,8 @@ function App() {
       <NewBlogForm
         addBlog = {addBlog}
         newTitle={newTitle}
-        handleTitleChange = {handleTitleChange}
         newAuthor={newAuthor}
-        handleAuthorChange = {handleAuthorChange}
         newUrl={newUrl}
-        handleUrlChange = {handleUrlChange}
       />
     </Togglable>
   )
