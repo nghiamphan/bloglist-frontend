@@ -1,4 +1,5 @@
 import React from 'react'
+import { inputAttrs }from '../hooks'
 
 const NewBlogForm = ({ addBlog, newTitle, newAuthor, newUrl }) => (
   <div>
@@ -6,27 +7,21 @@ const NewBlogForm = ({ addBlog, newTitle, newAuthor, newUrl }) => (
       <div>
         title:
         <input
-          type={newTitle.type}
-          value={newTitle.value}
-          onChange={newTitle.onChange}
+          {...inputAttrs(newTitle)}
         />
       </div>
 
       <div>
         author:
         <input
-          type={newAuthor.type}
-          value={newAuthor.value}
-          onChange={newAuthor.onChange}
+          {...inputAttrs(newAuthor)}
         />
       </div>
 
       <div>
         url:
         <input
-          type={newUrl.type}
-          value={newUrl.value}
-          onChange={newUrl.onChange}
+          {...inputAttrs(newUrl)}
         />
       </div>
 

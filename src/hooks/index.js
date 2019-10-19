@@ -18,3 +18,5 @@ export const useField = (type) => {
     set
   }
 }
+
+export const inputAttrs = ({ set, ...rest }) => rest

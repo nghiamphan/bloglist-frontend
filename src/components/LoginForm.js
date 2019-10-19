@@ -1,4 +1,5 @@
 import React from 'react'
+import { inputAttrs } from '../hooks'
 
 const LoginForm = ({ handleLogin, username, password }) => (
   <div>
@@ -8,19 +9,15 @@ const LoginForm = ({ handleLogin, username, password }) => (
       <div>
         <span>username </span>
         <input
-          type={username.type}
-          value={username.value}
+          {...inputAttrs(username)}
           name="Username"
-          onChange={username.onChange}
         />
       </div>
       <div>
         <span>password </span>
         <input
-          type={password.type}
-          value={password.value}
+          {...inputAttrs(password)}
           name="Password"
-          onChange={password.onChange}
         />
       </div>
       <button type="submit">login</button>
